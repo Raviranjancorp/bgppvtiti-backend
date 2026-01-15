@@ -5,9 +5,8 @@
 //   .catch((err) => console.log("MongoDB Error:", err));
 const mongoose = require("mongoose");
 
-mongoose.connect(process.env.DB_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log("MongoDB Connected"))
-.catch((err) => console.log("MongoDB Error:", err));
+mongoose.connect(process.env.DB_URL)
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => console.log("MongoDB Error:", err));
+
+
