@@ -85,18 +85,29 @@ router.post("/login", async (req, res) => {
 });
 
 // UPLOAD PDF
-router.post("/upload/:type", upload.single("pdf"), async (req, res) => {
-  try {
-    await Pdf.create({
-      title: req.file.originalname,
-      filename: req.file.filename,
-      type: req.params.type
-    });
+router.post(
+  "/upload/:type",
+  adminAuth,              // ✅ FIRST auth
+  upload.single("pdf"),   // ✅ THEN multer
+  async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ status: 0, msg: "No file uploaded" });
+      }
 
-    res.json({ status: 1, msg: "PDF uploaded successfully" });
-  } catch (err) {
-    res.status(500).json({ status: 0, msg: "Upload failed" });
+      await Pdf.create({
+        title: req.file.originalname,
+        filename: req.file.filename,
+        type: req.params.type
+      });
+
+      res.json({ status: 1, msg: "PDF uploaded successfully" });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ status: 0, msg: "Upload failed" });
+    }
   }
-});
+);
+
 
 module.exports = router;
