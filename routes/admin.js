@@ -5,6 +5,8 @@ const multer = require("multer");
 const path = require("path");
 const Admin = require("../models/Admin");
 const Pdf = require("../models/Pdf");
+const adminAuth = require("../middleware/adminAuth");
+
 
 const router = express.Router();
 
